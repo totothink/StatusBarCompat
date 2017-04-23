@@ -32,11 +32,21 @@ public class StatusBarCompat {
      * @param alpha       0 - 255
      */
     public static void setStatusBarColor(@NonNull Activity activity, @ColorInt int statusColor, int alpha) {
-        setStatusBarColor(activity, calculateStatusBarColor(statusColor, alpha));
+        setStatusBarColor(activity, calculateStatusBarColor(statusColor, alpha), false);
+    }
+
+    public static void setStatusBarColor(@NonNull Activity activity, @ColorInt int statusColor, int alpha, boolean light) {
+        setStatusBarColor(activity, calculateStatusBarColor(statusColor, alpha), light);
     }
 
     public static void setStatusBarColor(@NonNull Activity activity, @ColorInt int statusColor) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        setStatusBarColor(activity, statusColor, false);
+    }
+
+    public static void setStatusBarColor(@NonNull Activity activity, @ColorInt int statusColor, boolean light) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            StatusBarCompatM.setStatusBarColor(activity, statusColor, light);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             StatusBarCompatLollipop.setStatusBarColor(activity, statusColor);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             StatusBarCompatKitKat.setStatusBarColor(activity, statusColor);
@@ -52,7 +62,17 @@ public class StatusBarCompat {
      * @param hideStatusBarBackground hide status bar alpha Background when SDK > 21, true if hide it
      */
     public static void translucentStatusBar(@NonNull Activity activity, boolean hideStatusBarBackground) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        translucentStatusBar(activity, hideStatusBarBackground, false);
+    }
+
+    public static void translucentStatusBar(@NonNull Activity activity, boolean hideStatusBarBackground, boolean fits) {
+        translucentStatusBar(activity, hideStatusBarBackground, fits, false);
+    }
+
+    public static void translucentStatusBar(@NonNull Activity activity, boolean hideStatusBarBackground, boolean fits, boolean light) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            StatusBarCompatM.translucentStatusBar(activity, hideStatusBarBackground, fits, light);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             StatusBarCompatLollipop.translucentStatusBar(activity, hideStatusBarBackground);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             StatusBarCompatKitKat.translucentStatusBar(activity);
@@ -61,7 +81,9 @@ public class StatusBarCompat {
 
     public static void setStatusBarColorForCollapsingToolbar(@NonNull Activity activity, AppBarLayout appBarLayout, CollapsingToolbarLayout collapsingToolbarLayout,
                                                              Toolbar toolbar, @ColorInt int statusColor) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            StatusBarCompatM.setStatusBarColorForCollapsingToolbar(activity, appBarLayout, collapsingToolbarLayout, toolbar, statusColor);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             StatusBarCompatLollipop.setStatusBarColorForCollapsingToolbar(activity, appBarLayout, collapsingToolbarLayout, toolbar, statusColor);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             StatusBarCompatKitKat.setStatusBarColorForCollapsingToolbar(activity, appBarLayout, collapsingToolbarLayout, toolbar, statusColor);

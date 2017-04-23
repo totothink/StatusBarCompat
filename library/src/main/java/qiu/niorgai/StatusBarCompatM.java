@@ -1,5 +1,10 @@
 package qiu.niorgai;
 
+/**
+ * After Marshmallow use system method.
+ * Created by aaron on 2017/4/23.
+ */
+
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -18,12 +23,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
-/**
- * After Lollipop use system method.
- * Created by qiu on 8/27/16.
- */
-@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-class StatusBarCompatLollipop {
+@TargetApi(Build.VERSION_CODES.M)
+public class StatusBarCompatM {
 
     /**
      * return statusBar's Height in pixels
@@ -59,13 +60,20 @@ class StatusBarCompatLollipop {
      * 3. set FitsSystemWindows to false
      */
     static void setStatusBarColor(Activity activity, int statusColor) {
+        setStatusBarColor(activity, statusColor, false);
+    }
+
+    static void setStatusBarColor(Activity activity, int statusColor, boolean light){
         Window window = activity.getWindow();
 
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(statusColor);
-        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
 
+        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        if(light){
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
         setFitsSystemWindows(activity, false);
     }
 
@@ -78,6 +86,14 @@ class StatusBarCompatLollipop {
      * @param hideStatusBarBackground hide statusBar's shadow
      */
     static void translucentStatusBar(Activity activity, boolean hideStatusBarBackground) {
+        translucentStatusBar(activity, hideStatusBarBackground, false);
+    }
+
+    static void translucentStatusBar(Activity activity, boolean hideStatusBarBackground, boolean fits){
+        translucentStatusBar(activity, hideStatusBarBackground, fits, false);
+    }
+
+    static void translucentStatusBar(Activity activity, boolean hideStatusBarBackground, boolean fits, boolean light){
         Window window = activity.getWindow();
 
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -89,8 +105,11 @@ class StatusBarCompatLollipop {
             window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
         }
+        if(light){
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
 
-        setFitsSystemWindows(activity, false);
+        setFitsSystemWindows(activity, fits);
     }
 
     /**
